@@ -19,17 +19,23 @@ Bundler.require(*Rails.groups)
 
 module ApiQd
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
-
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
-
-    # Only loads a smaller set of middleware suitable for API only apps.
-    # Middleware like session, flash, cookies can be added back manually.
-    # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.before_configuration do
+      env_file = File.join(Rails.root, 'config', 'cloudinary.yml')
+      YAML.load(File.open(env_file)).each do |key, value|
+        ENV[key.to_s] = value
+      end if File.exists?(env_file)
+    end
+
+    Cloudinary.config do |config|
+      config.cloud_name = ENV['CLOUD_NAME']
+      config.api_key = ENV['API_KEY']
+      config.api_secret = ENV['API_SECRET']
+      config.secure = true
+      config.cdn_subdomain = true
+    end
+
   end
 end
