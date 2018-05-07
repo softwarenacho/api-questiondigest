@@ -21,21 +21,5 @@ module ApiQd
   class Application < Rails::Application
     config.load_defaults 5.2
     config.api_only = true
-
-    config.before_configuration do
-      env_file = File.join(Rails.root, 'config', 'cloudinary.yml')
-      YAML.load(File.open(env_file)).each do |key, value|
-        ENV[key.to_s] = value
-      end if File.exists?(env_file)
-    end
-
-    Cloudinary.config do |config|
-      config.cloud_name = ENV['CLOUD_NAME']
-      config.api_key = ENV['API_KEY']
-      config.api_secret = ENV['API_SECRET']
-      config.secure = true
-      config.cdn_subdomain = true
-    end
-
   end
 end

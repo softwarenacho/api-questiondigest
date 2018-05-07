@@ -14,6 +14,3 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-
-# Ignoring cloudinary configuration files
-/config/cloudinary.yml
